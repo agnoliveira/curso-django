@@ -8,6 +8,10 @@ django = "*"
 gunicorn = "*"
 
 [dev-packages]
+pytest = "*"
+coverage = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.9"
