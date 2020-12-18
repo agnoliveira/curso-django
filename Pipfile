@@ -11,8 +11,8 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 django-debug-toolbar = "*"
 sentry-sdk = "*"
-django-s3-folder-storage = "*"
 collectfast = "*"
+django-s3-folder-storage = "*"
 
 [dev-packages]
 pytest = "*"
