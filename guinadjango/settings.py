@@ -15,6 +15,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import dj_database_url
+# from coverage.annotate import os
 from decouple import config, Csv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -139,7 +140,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
-# COLLECTFAST_ENABLE = False
+COLLECTFAST_ENABLE = False
+COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 
@@ -153,11 +156,11 @@ if AWS_ACCESS_KEY_ID:
     AWS_PRELOAD_METADATA = True
     AWS_AUTO_CREATE_BUCKET = False
     AWS_QUERYSTRING_AUTH = True
-    # AWS_S3_CUSTOM_DOMAIN = None
+    AWS_S3_CUSTOM_DOMAIN = None
 
+    COLLECTFAST_ENABLED = True
     STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
     COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
-    COLLECTFAST_ENABLED = True
 
     AWS_DEFAULT_ACL = 'private'
 
@@ -182,4 +185,11 @@ SENTRY_DSN = config('SENTRY_DSN', default=None)
 
 if SENTRY_DSN:
     sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[DjangoIntegration()], traces_sample_rate=1.0)
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
